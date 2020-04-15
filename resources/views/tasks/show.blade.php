@@ -2,17 +2,18 @@
 
 @section('content')
 
-    <h1>id = {{ $message->id }} のメッセージ詳細ページ</h1>
+    <h1>id = {{ $task >id }} のタスク詳細ページ</h1>
 
     <table class="table table-bordered">
         <tr>
             <th>id</th>
-            <td>{{ $message->id }}</td>
+            <td>{{ $task -> id }}</td>
         </tr>
         <tr>
-            <th>メッセージ</th>
-            <td>{{ $message->content }}</td>
+            <th>タスク</th>
+            <td>{{ $task->content }}</td>
         </tr>
     </table>
-
+  
+    {!! link_to_route('tasks.create', '新規タスクの投稿', [], ['class' => 'btn btn-primary']) !!}
 @endsection
