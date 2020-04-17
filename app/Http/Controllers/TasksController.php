@@ -43,7 +43,13 @@ class TasksController extends Controller
      */
     public function store(Request $request)
     {
-         $task = new Task;
+        $this->validate($request, [
+            'status' => 'required|max:10',   
+            'content' => 'required|max:191',
+        ]);
+            
+        $task = new Task;
+        $task->status = $request->status; 
         $task->content = $request->content;
         $task->save();
 
@@ -74,7 +80,7 @@ class TasksController extends Controller
      */
     public function edit($id)
     {
-     $task = Task::find($id);
+        $task = Task::find($id);
 
         return view('tasks.edit', [
             'task' => $task,
@@ -90,8 +96,14 @@ class TasksController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->validate($request, [
+            'status' => 'required|max:10',   
+            'content' => 'required|max:191',
+        ]);
+       
         
         $task = Task::find($id);
+        $task->status  = $request->status; 
         $task->content = $request->content;
         $task->save();
 
@@ -106,7 +118,7 @@ class TasksController extends Controller
      */
     public function destroy($id)
     {
-         $task= Task::find($id);
+        $task= Task::find($id);
         $task->delete();
 
         return redirect('/');
