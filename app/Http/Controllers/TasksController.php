@@ -60,15 +60,19 @@ class TasksController extends Controller
             'content' => 'required|max:191',
         ]);
        
-            
-        $task = new \App\Task;
+         if (\Auth::id() === $task->user_id) {
+           
+           
+           $task = new \App\Task;
         $task->user_id = \Auth::id();
         $task->status = $request->status; 
         $task->content = $request->content;
         $task->save();
 
-        return redirect('/');
-    }
+        
+         }else{
+            return redirect('/');
+        }}
 
     /**
      * Display the specified resource.
@@ -80,7 +84,8 @@ class TasksController extends Controller
     {
       
         $task = \App\Task::find($id);
-
+       
+        
         return view('tasks.show', [
             'task' => $task,
         ]);
@@ -115,13 +120,14 @@ class TasksController extends Controller
             'content' => 'required|max:191',
         ]);
        
+        if (\Auth::id() === $task->user_id) {
         
         $task = \App\Task::find($id);
         $task->status  = $request->status; 
         $task->content = $request->content;
-        $task->save();
+        $task->save();}
 
-        return redirect('/');
+       else{ return redirect('/');}
     }
 
     /**
@@ -139,7 +145,7 @@ class TasksController extends Controller
             $task->delete();
         }
 
-        return redirect('/');
+     else{   return redirect('/');}
         
         
     }
