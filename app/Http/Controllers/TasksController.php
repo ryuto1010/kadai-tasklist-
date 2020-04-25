@@ -57,10 +57,10 @@ class TasksController extends Controller
     {
         $this->validate($request, [
             'status' => 'required|max:10',   
-            'content' => 'required|max:191',
-        ]);
+            'content' => 'required|max:191',]);
+        
        
-         if (\Auth::id() === $task->user_id) {
+        //  if (\Auth::id() === $task->user_id) {
            
            
            $task = new \App\Task;
@@ -68,11 +68,16 @@ class TasksController extends Controller
         $task->status = $request->status; 
         $task->content = $request->content;
         $task->save();
-
+   
+       
+         return redirect('/');
+         }
         
-         }else{
-            return redirect('/');
-        }}
+           
+        
+          
+         
+
 
     /**
      * Display the specified resource.
@@ -85,11 +90,15 @@ class TasksController extends Controller
       
         $task = \App\Task::find($id);
        
-        
+     if (\Auth::id() === $task->user_id) {
+    
         return view('tasks.show', [
             'task' => $task,
         ]);
-    }
+        
+     }else{return redirect('/');}
+         
+        }
 
     /**
      * Show the form for editing the specified resource.
@@ -120,15 +129,18 @@ class TasksController extends Controller
             'content' => 'required|max:191',
         ]);
        
-        if (\Auth::id() === $task->user_id) {
+       
         
         $task = \App\Task::find($id);
         $task->status  = $request->status; 
         $task->content = $request->content;
-        $task->save();}
+        $task->save();
+        
+    
 
-       else{ return redirect('/');}
-    }
+    //   else{ 
+           return redirect('/');
+        }
 
     /**
      * Remove the specified resource from storage.
@@ -144,10 +156,10 @@ class TasksController extends Controller
         if (\Auth::id() === $task->user_id) {
             $task->delete();
         }
-
-     else{   return redirect('/');}
         
         
-    }
+        
+        return redirect('/');
+       }
     
 }
