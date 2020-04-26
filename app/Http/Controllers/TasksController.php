@@ -107,13 +107,21 @@ class TasksController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {
-        $task = \App\Task::find($id);
+     {
+         
+         $task = \App\Task::find($id);
+         
+         if (\Auth::id() === $task->user_id) {
+         
+        
 
         return view('tasks.edit', [
             'task' => $task,
         ]);
-    }
+    }else{return redirect('/');}
+         
+         
+     }
 
     /**
      * Update the specified resource in storage.
@@ -124,23 +132,33 @@ class TasksController extends Controller
      */
     public function update(Request $request, $id)
     {
+        
+        
         $this->validate($request, [
             'status' => 'required|max:10',   
             'content' => 'required|max:191',
         ]);
-       
+        
+        
        
         
         $task = \App\Task::find($id);
+        
+         if (\Auth::id() === $task->user_id) {
         $task->status  = $request->status; 
         $task->content = $request->content;
         $task->save();
         
+        return redirect('/');
+        
+         }
+        
+         
     
 
-    //   else{ 
-           return redirect('/');
-        }
+      else{ 
+          return redirect('/');
+}}
 
     /**
      * Remove the specified resource from storage.
@@ -158,8 +176,8 @@ class TasksController extends Controller
         }
         
         
-        
         return redirect('/');
-       }
+        
+    }
     
 }
